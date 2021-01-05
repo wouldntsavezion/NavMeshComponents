@@ -108,7 +108,7 @@ namespace UnityEngine.AI
         float m_MinRegionArea = 0.2f;
         /// <summary> Gets or sets The approximate minimum area of individual NavMesh regions. </summary>
         /// <remarks> This property allows you to cull away small non-connected NavMesh regions. NavMesh regions whose surface area is smaller than the specified value, will be removed. </remarks>
-        public int minRegionArea { get { return m_MinRegionArea; } set { m_MinRegionArea = value; } }
+        public float minRegionArea { get { return m_MinRegionArea; } set { m_MinRegionArea = value; } }
 
         [SerializeField]
         bool m_BuildHeightMesh;
