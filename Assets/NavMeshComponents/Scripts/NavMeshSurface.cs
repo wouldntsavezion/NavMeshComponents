@@ -67,6 +67,11 @@ namespace UnityEngine.AI
         [SerializeField]
         float m_VoxelSize;
         public float voxelSize { get { return m_VoxelSize; } set { m_VoxelSize = value; } }
+        [SerializeField]
+        bool m_OverrideMinRegionArea;
+        [SerializeField]
+        float m_MinRegionArea = 0.2f;
+        public int minRegionArea { get { return m_MinRegionArea; } set { m_MinRegionArea = value; } }
 
         // Currently not supported advanced options
         [SerializeField]
@@ -152,6 +157,10 @@ namespace UnityEngine.AI
             {
                 buildSettings.overrideVoxelSize = true;
                 buildSettings.voxelSize = voxelSize;
+            }
+            if (overrideMinRegionArea)
+            {
+                buildSettings.minRegionArea = minRegionArea;
             }
             return buildSettings;
         }
@@ -479,6 +488,11 @@ namespace UnityEngine.AI
                     m_TileSize = kMinTileSize;
                 if (m_TileSize > kMaxTileSize)
                     m_TileSize = kMaxTileSize;
+                
+                // When unchecking the override control, revert to default value.
+                const float kDefaultMinRegionArea = 2.0f;
+                if (!m_OverrideMinRegionArea)
+                    m_MinRegionArea = kDefaultMinRegionArea;
             }
         }
 #endif
