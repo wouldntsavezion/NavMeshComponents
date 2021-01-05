@@ -71,7 +71,7 @@ namespace UnityEngine.AI
         bool m_OverrideMinRegionArea;
         [SerializeField]
         float m_MinRegionArea = 0.2f;
-        public int minRegionArea { get { return m_MinRegionArea; } set { m_MinRegionArea = value; } }
+        public float minRegionArea { get { return m_MinRegionArea; } set { m_MinRegionArea = value; } }
 
         // Currently not supported advanced options
         [SerializeField]
