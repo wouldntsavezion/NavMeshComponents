@@ -24,10 +24,12 @@ namespace UnityEditor.AI
         SerializedProperty m_LayerMask;
         SerializedProperty m_OverrideTileSize;
         SerializedProperty m_OverrideVoxelSize;
+        SerializedProperty m_OverrideMinRegionArea;
         SerializedProperty m_Size;
         SerializedProperty m_TileSize;
         SerializedProperty m_UseGeometry;
         SerializedProperty m_VoxelSize;
+        SerializedProperty m_MinRegionArea;
 
 #if NAVMESHCOMPONENTS_SHOW_NAVMESHDATA_REF
         SerializedProperty m_NavMeshData;
@@ -70,10 +72,12 @@ namespace UnityEditor.AI
             m_LayerMask = serializedObject.FindProperty("m_LayerMask");
             m_OverrideTileSize = serializedObject.FindProperty("m_OverrideTileSize");
             m_OverrideVoxelSize = serializedObject.FindProperty("m_OverrideVoxelSize");
+            m_OverrideMinRegionArea = serializedObject.FindProperty("m_OverrideMinRegionArea");
             m_Size = serializedObject.FindProperty("m_Size");
             m_TileSize = serializedObject.FindProperty("m_TileSize");
             m_UseGeometry = serializedObject.FindProperty("m_UseGeometry");
             m_VoxelSize = serializedObject.FindProperty("m_VoxelSize");
+            m_MinRegionArea = serializedObject.FindProperty("m_MinRegionArea");
 
 #if NAVMESHCOMPONENTS_SHOW_NAVMESHDATA_REF
             m_NavMeshData = serializedObject.FindProperty("m_NavMeshData");
@@ -183,6 +187,23 @@ namespace UnityEditor.AI
                     {
                         if (m_OverrideTileSize.boolValue)
                             EditorGUILayout.HelpBox("Tile size controls the how local the changes to the world are (rebuild or carve). Small tile size allows more local changes, while potentially generating more data overall.", MessageType.None);
+                    }
+                    EditorGUI.indentLevel--;
+                }
+
+                // Override min region area
+                EditorGUILayout.PropertyField(m_OverrideMinRegionArea);
+
+                using (new EditorGUI.DisabledScope(!m_OverrideMinRegionArea.boolValue || m_OverrideMinRegionArea.hasMultipleDifferentValues))
+                {
+                    EditorGUI.indentLevel++;
+
+                    EditorGUILayout.PropertyField(m_MinRegionArea);
+
+                    if (!m_OverrideMinRegionArea.hasMultipleDifferentValues)
+                    {
+                        if (m_OverrideMinRegionArea.boolValue)
+                            EditorGUILayout.HelpBox("This property allows you to cull away small non-connected NavMesh regions. NavMesh regions whose surface area is smaller than the specified value, will be removed.", MessageType.None);
                     }
                     EditorGUI.indentLevel--;
                 }

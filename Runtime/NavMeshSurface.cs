@@ -100,6 +100,17 @@ namespace UnityEngine.AI
         public float voxelSize { get { return m_VoxelSize; } set { m_VoxelSize = value; } }
 
         [SerializeField]
+        bool m_OverrideMinRegionArea;
+        /// <summary> Gets or sets whether the NavMesh building process uses the <see cref="minRegionArea"/> value. </summary>
+        public bool overrideMinRegionArea { get { return m_OverrideMinRegionArea; } set { m_OverrideMinRegionArea = value; } }
+
+        [SerializeField]
+        float m_MinRegionArea = 0.2f;
+        /// <summary> Gets or sets The approximate minimum area of individual NavMesh regions. </summary>
+        /// <remarks> This property allows you to cull away small non-connected NavMesh regions. NavMesh regions whose surface area is smaller than the specified value, will be removed. </remarks>
+        public int minRegionArea { get { return m_MinRegionArea; } set { m_MinRegionArea = value; } }
+
+        [SerializeField]
         bool m_BuildHeightMesh;
         /// <summary> (Not supported) Gets or sets whether the NavMesh building process produces more detailed elevation information. </summary>
         /// <seealso href="https://docs.unity3d.com/Manual/nav-HeightMesh.html"/>
@@ -193,6 +204,10 @@ namespace UnityEngine.AI
                 buildSettings.overrideVoxelSize = true;
                 buildSettings.voxelSize = voxelSize;
             }
+			if (overrideMinRegionArea)
+			{
+                buildSettings.minRegionArea = minRegionArea;
+			}
             return buildSettings;
         }
 
@@ -530,6 +545,11 @@ namespace UnityEngine.AI
                     m_TileSize = kMinTileSize;
                 if (m_TileSize > kMaxTileSize)
                     m_TileSize = kMaxTileSize;
+                
+                // When unchecking the override control, revert to default value.
+                const float kDefaultMinRegionArea = 2.0f;
+                if (!m_OverrideMinRegionArea)
+                    m_MinRegionArea = kDefaultMinRegionArea;
             }
         }
 #endif
